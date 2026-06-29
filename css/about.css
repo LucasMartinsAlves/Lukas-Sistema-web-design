@@ -1,0 +1,70 @@
+.about-transition {
+  position: relative;
+}
+
+.about {
+  position: sticky;
+  top: 0;
+  isolation: isolate;
+  display: grid;
+  min-height: 100svh;
+  padding: clamp(4rem, 12vw, 6rem) clamp(1.25rem, 6vw, 2rem);
+  overflow: hidden;
+  text-align: center;
+  background: transparent;
+
+  .about-content {
+    position: relative;
+    z-index: 1;
+    align-self: end;
+    justify-self: center;
+    max-width: 22rem;
+    margin-bottom: 0;
+  }
+
+  .about-eyebrow {
+    display: block;
+    margin-bottom: clamp(1rem, 4vh, 2rem);
+    color: var(--text-muted-color);
+    font-weight: 400;
+  }
+
+  .about-title {
+    color: var(--text-muted-color);
+    font-size: clamp(1.25rem, 6vw, 1.625rem);
+    font-weight: 500;
+    line-height: 1.4;
+    letter-spacing: -0.04em;
+    text-wrap: balance;
+  }
+
+  .about-title-word {
+    display: inline;
+  }
+}
+
+@media (min-width: 75rem) {
+  .about {
+    place-items: center;
+    padding:
+      clamp(5rem, 8vw, 7rem) clamp(4rem, 8.5vw, 7.5rem);
+
+    .about-content {
+      align-self: auto;
+      max-width: 78rem;
+      margin-bottom: 0;
+    }
+
+    .about-eyebrow {
+      margin-bottom: 2.5rem;
+      font-size: 1.5rem;
+      font-weight: 500;
+    }
+
+    .about-title {
+      font-size: 2.25rem;
+      font-weight: 600;
+      line-height: 1.45;
+    }
+  }
+}

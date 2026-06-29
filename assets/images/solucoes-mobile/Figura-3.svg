@@ -1,0 +1,6 @@
+<svg width="600" height="600" viewBox="0 0 600 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g style="mix-blend-mode:plus-darker">
+<path d="M0 0L600 0C600 165.685 465.685 300 300 300C134.315 300 0 165.685 0 0Z" fill="#264ED2"/>
+<path d="M0 300H600C600 465.685 465.685 600 300 600C134.315 600 0 465.685 0 300Z" fill="#264ED2"/>
+</g>
+</svg>

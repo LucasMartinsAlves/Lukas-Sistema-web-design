@@ -1,0 +1,33 @@
+@import url('https://fonts.googleapis.com/css2?family=Libre+Bodoni:wght@500&family=Montserrat:wght@500&family=Poppins:wght@400;500;600&display=swap');
+@import url('./variables.css');
+@import url('./header.css');
+@import url('./intro.css');
+@import url('./hero.css');
+@import url('./about.css');
+@import url('about-ex.css');
+@import url('./solutions.css');
+@import url('./contact.css');
+@import url('./footer.css');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  color: var(--black-color);
+  background-color: var(--white-background-color-primary);
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+html {
+  scroll-behavior: smooth;
+}

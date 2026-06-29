@@ -1,0 +1,39 @@
+.site-footer {
+  display: grid;
+  gap: 1.5rem;
+  padding: 2rem clamp(1.25rem, 6vw, 2rem);
+  background-color: var(--white-background-color-primary);
+  color: var(--black-color);
+  border-top: 0.0675rem solid var(--border-color);
+}
+
+.footer-nav {
+  display: flex;
+  
+  flex-wrap: wrap;
+  gap: 1rem 1.5rem;
+}
+
+.footer-nav a,
+.footer-copyright {
+  color: inherit;
+  font-size: 0.625rem;
+  line-height: 1.4;
+  text-decoration: none;
+}
+
+.footer-copyright {
+  margin: 0;
+}
+
+@media (min-width: 75rem) {
+  .site-footer {
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    padding: 2rem clamp(4rem, 6vw, 6rem);
+  }
+
+  .footer-nav {
+    gap: clamp(2rem, 3vw, 3rem);
+  }
+}

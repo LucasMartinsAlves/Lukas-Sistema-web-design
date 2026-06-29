@@ -1,0 +1,123 @@
+.about-ex {
+  padding: clamp(8rem, 40vw, 10rem) 0;
+  position: relative;
+  z-index: 2;
+  background-color: var(--white-background-color-primary);
+
+  .about-ex-content {
+    padding-inline: clamp(1.25rem, 5vw, 2rem);
+  }
+
+  .about-ex-description {
+    max-width: 22rem;
+    font-size: clamp(1.5rem, 6vw, 2rem);
+    font-weight: 500;
+    line-height: 1.5;
+    letter-spacing: -0.04em;
+    text-wrap: pretty;
+  }
+
+  .about-ex-link {
+    display: inline-block;
+    margin-top: 1.5rem;
+    color: inherit;
+    font-size: 1.125rem;
+    text-underline-offset: 0.2rem;
+  }
+
+  .about-ex-proof {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-top: 3rem;
+  }
+
+  .about-ex-proof-column {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .about-ex-proof-column--secondary {
+    padding-top: 5rem;
+  }
+
+  .proof-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 18rem;
+    padding: 1.25rem;
+    border: 0.0625rem solid var(--black-color);
+  }
+
+  .proof-card+.proof-card {
+    margin-top: -0.0625rem;
+  }
+
+  .about-ex-proof-column--secondary {
+    margin-left: -0.0625rem;
+    padding-top: 5rem;
+  }
+
+  .proof-card-value {
+    color: var(--primary-color);
+    font-family: 'Libre Bodoni';
+    font-size: clamp(2.75rem, 13vw, 4rem);
+    font-weight: 500;
+    line-height: 1;
+  }
+
+  .proof-card-label {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+}
+
+@media (min-width: 75rem) {
+  .about-ex {
+    display: grid;
+    grid-template-columns: 22rem 29.25rem;
+    grid-template-rows: 100%;
+    column-gap: 9.25rem;
+    justify-content: center;
+    align-items: center;
+    height: 100svh;
+    padding: 0;
+    overflow: clip;
+
+    .about-ex-content {
+      padding-inline: 0;
+      align-self: start;
+      margin-top: 17.5rem;
+    }
+
+    .about-ex-description {
+      max-width: 22rem;
+      font-size: 1.5rem;
+      line-height: 1.5;
+    }
+
+    .about-ex-link {
+      margin-top: 1.5rem;
+      font-size: 1.125rem;
+    }
+
+    .about-ex-proof {
+      grid-template-columns: repeat(2, 1fr);
+      align-self: start;
+      margin-top: 8.25rem;
+    }
+
+    .about-ex-proof-column--secondary {
+      padding-top: 3.75rem;
+    }
+
+    .proof-card {
+      min-height: 25rem;
+      padding: 1.25rem;
+    }
+
+    .proof-card-value {
+      font-size: 4rem;
+    }
+  }
+}
