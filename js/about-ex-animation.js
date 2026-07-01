@@ -12,7 +12,7 @@ export function initAboutExAnimation(gsap) {
         scrub: 0.8,
         invalidateOnRefresh: true,
       }
-    })
+    });
 
     timeline
       .to('.about-ex-proof-column--primary', {

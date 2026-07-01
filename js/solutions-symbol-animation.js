@@ -1,7 +1,13 @@
 export function initSolutionsSymbolAnimation(gsap, ScrollTrigger) {
   const transition = document.querySelector('.solutions-transition');
   const stage = document.querySelector('.solutions-symbol-stage');
+  const symbolPosition = document.querySelector('.solutions-symbol-position');
   const automationSection = document.querySelector('.solution-automation');
+  const introAnchor = document.querySelector('.solutions-symbol-anchor-intro');
+  const managementAnchor = document.querySelector('.solutions-symbol-anchor-management');
+  const webAnchor = document.querySelector('.solutions-symbol-anchor-web');
+  const mobileAnchor = document.querySelector('.solutions-symbol-anchor-mobile');
+  const automationAnchor = document.querySelector('.solutions-symbol-anchor-automation');
   const logo = document.querySelector('.solutions-symbol-logo');
   const shapes = document.querySelector('.solutions-symbol-shapes');
 
@@ -22,7 +28,12 @@ export function initSolutionsSymbolAnimation(gsap, ScrollTrigger) {
   if (
     !transition ||
     !stage ||
+    !symbolPosition ||
     !automationSection ||
+    !managementAnchor ||
+    !webAnchor ||
+    !mobileAnchor ||
+    !automationAnchor ||
     !symbol ||
     !logo ||
     !shapes ||
@@ -38,6 +49,20 @@ export function initSolutionsSymbolAnimation(gsap, ScrollTrigger) {
   ) {
     return;
   }
+
+  const baseSymbolScale = 1;
+  const finalSymbolScale = 2.8;
+  const firstSplitOffset = 240;
+  const splitOffset = 180;
+  const firstSplitSymbolScale = 2.5;
+  const firstSplitScaleX = 1.6;
+  const figure1PartScale = 3;
+  const figure2PartScaleX = 3.2;
+  const figure2PartScaleY = 2.6;
+  const circleFinalRadius = 375;
+  const pauseDuration = 0.8;
+  const morphDuration = 1;
+  const mobileTimelineHeightFactor = 0.84;
 
   const squareTopPoints = `
   150,300
@@ -105,12 +130,21 @@ export function initSolutionsSymbolAnimation(gsap, ScrollTrigger) {
     bottom: 'M-75,300 H675 C675,507.107 507.107,675 300,675 C92.893,675 -75,507.107 -75,300 Z',
   };
 
+  function getSymbolTimelineEnd() {
+    if (window.matchMedia('(min-width: 75rem)').matches) {
+      return '+=450%';
+    }
+
+    return `+=${transition.offsetHeight * mobileTimelineHeightFactor}`;
+  }
+
   const timeline = gsap.timeline({
     scrollTrigger: {
       trigger: '.solutions-transition',
       start: 'top top',
-      end: '+=450%',
+      end: () => getSymbolTimelineEnd(),
       scrub: true,
+      invalidateOnRefresh: true,
     },
   });
 
@@ -118,7 +152,7 @@ export function initSolutionsSymbolAnimation(gsap, ScrollTrigger) {
     transformOrigin: 'center',
   });
 
-  function getLogoY() {
+  function getFallbackLogoY() {
     if (window.matchMedia('(min-width: 75rem)').matches) {
       return -window.innerHeight * 0.85;
     }
@@ -134,10 +168,68 @@ export function initSolutionsSymbolAnimation(gsap, ScrollTrigger) {
     return window.innerHeight * 0.10;
   }
 
-  gsap.set(logo, {
-    y: getLogoY,
-    transformOrigin: 'center',
-  });
+  function getElementCenter(element) {
+    const rect = element.getBoundingClientRect();
+
+    return {
+      x: rect.left + rect.width / 2,
+      y: rect.top + rect.height / 2,
+    };
+  }
+
+  function getSymbolScaleRatio() {
+    const symbolRect = symbol.getBoundingClientRect();
+    const viewBoxWidth = symbol.viewBox.baseVal.width;
+
+    if (!symbolRect.width || !viewBoxWidth) {
+      return 1;
+    }
+
+    return viewBoxWidth / symbolRect.width;
+  }
+
+  function getViewportAnchorOffsetY(anchor, element) {
+    const anchorCenter = getElementCenter(anchor);
+    const elementCenter = getElementCenter(element);
+
+    return anchorCenter.y - elementCenter.y;
+  }
+
+  function getSvgAnchorOffsetY(anchor, element = symbol) {
+    return getViewportAnchorOffsetY(anchor, element) * getSymbolScaleRatio();
+  }
+
+  function getInitialLogoOffsetY() {
+    if (!introAnchor) {
+      return getFallbackLogoY();
+    }
+
+    return getSvgAnchorOffsetY(introAnchor);
+  }
+
+  function getSolutionAnchorOffsetY(anchor) {
+    if (!anchor) {
+      return 0;
+    }
+
+    const section = anchor.closest('.solution');
+
+    if (!section) {
+      return 0;
+    }
+
+    return anchor.offsetTop - section.clientHeight / 2;
+  }
+
+  function setInitialLogoPosition() {
+    gsap.set(logo, {
+      y: getInitialLogoOffsetY,
+      transformOrigin: 'center',
+    });
+  }
+
+  setInitialLogoPosition();
+  ScrollTrigger.addEventListener('refreshInit', setInitialLogoPosition);
 
   function lockSymbolStage() {
     const transitionRect = transition.getBoundingClientRect();
@@ -161,9 +253,10 @@ export function initSolutionsSymbolAnimation(gsap, ScrollTrigger) {
     onLeaveBack: unlockSymbolStage,
   });
 
-  timeline
-    // Logo diminui e desaparece.
-    .to(logo, {
+  // Fase 1: logo para sistema de gestao.
+  function animateIntroToManagement() {
+    timeline
+      .to(logo, {
       y: 0,
       scale: 0.85,
       opacity: 0,
@@ -171,7 +264,6 @@ export function initSolutionsSymbolAnimation(gsap, ScrollTrigger) {
       duration: 1,
       ease: 'power2.out',
     })
-    // As duas metades aparecem juntas, formando o quadrado.
     .fromTo(
       shapes,
       {
@@ -187,31 +279,34 @@ export function initSolutionsSymbolAnimation(gsap, ScrollTrigger) {
       '<0.35',
     )
 
-    // Separação mais longa e ampla.
+    .to(symbolPosition, {
+      y: () => getSolutionAnchorOffsetY(managementAnchor),
+      duration: 1.6,
+      ease: 'power2.inOut',
+    }, '<')
+
     .to(topShape, {
-      x: 240,
-      scaleX: 1.6,
+      x: firstSplitOffset,
+      scaleX: firstSplitScaleX,
       transformOrigin: 'center bottom',
       duration: 1.6,
       ease: 'power2.inOut',
     })
     .to(bottomShape, {
-      x: -240,
-      scaleX: 1.6,
+      x: -firstSplitOffset,
+      scaleX: firstSplitScaleX,
       transformOrigin: 'center top',
       duration: 1.6,
       ease: 'power2.inOut',
     }, '<')
 
-    // A figura começa a crescer durante a separação.
     .to(symbol, {
-      scale: 2.5,
+      scale: firstSplitSymbolScale,
       transformOrigin: 'center',
       duration: 1.6,
       ease: 'power2.inOut',
     }, '<')
 
-    // Morph superior mais rápido.
     .to(topShape, {
       x: 0,
       scaleX: 1,
@@ -222,7 +317,6 @@ export function initSolutionsSymbolAnimation(gsap, ScrollTrigger) {
       ease: 'power1.inOut',
     })
 
-    // Morph inferior.
     .to(bottomShape, {
       x: 0,
       scaleX: 1,
@@ -233,39 +327,47 @@ export function initSolutionsSymbolAnimation(gsap, ScrollTrigger) {
       ease: 'power1.inOut',
     }, '<')
 
-    // Ajuste final de escala.
     .to(symbol, {
-      scale: 2.8,
-      duration: 1,
+      scale: finalSymbolScale,
+      duration: morphDuration,
       ease: 'power1.inOut',
     }, '<')
 
     .to({}, {
-      duration: 0.8,
-    })
+      duration: pauseDuration,
+    });
+  }
 
-    // Figura atual volta para o quadrado.
-    .to(topShape, {
+  animateIntroToManagement();
+
+  // Fase 2: sistema de gestao para sistema web.
+  function animateManagementToWeb() {
+    timeline
+      .to(topShape, {
       attr: {
         points: squareTopPoints,
       },
-      duration: 1,
+      duration: morphDuration,
       ease: 'power1.inOut',
     })
     .to(bottomShape, {
       attr: {
         points: squareBottomPoints,
       },
-      duration: 1,
+      duration: morphDuration,
+      ease: 'power1.inOut',
+    }, '<')
+    .to(symbolPosition, {
+      y: () => getSolutionAnchorOffsetY(webAnchor),
+      duration: morphDuration,
       ease: 'power1.inOut',
     }, '<')
     .to(symbol, {
-      scale: 1,
-      duration: 1,
+      scale: baseSymbolScale,
+      duration: morphDuration,
       ease: 'power1.inOut',
     }, '<')
 
-    // Troca invisível: 2 partes somem, 4 partes aparecem como quadrado.
     .set(figure1Parts, {
       attr: (index) => ({
         points: figure1SquarePoints[index],
@@ -280,35 +382,34 @@ export function initSolutionsSymbolAnimation(gsap, ScrollTrigger) {
       opacity: 0,
     })
 
-    // As 4 partes se separam e expandem.
     .to(figure1Parts[0], {
-      x: -180,
-      y: -180,
-      scale: 3,
+      x: -splitOffset,
+      y: -splitOffset,
+      scale: figure1PartScale,
       transformOrigin: 'center',
       duration: 1,
       ease: 'power2.inOut',
     })
     .to(figure1Parts[1], {
-      x: 180,
-      y: -180,
-      scale: 3,
+      x: splitOffset,
+      y: -splitOffset,
+      scale: figure1PartScale,
       transformOrigin: 'center',
       duration: 1,
       ease: 'power2.inOut',
     }, '<')
     .to(figure1Parts[2], {
-      x: 180,
-      y: 180,
-      scale: 3,
+      x: splitOffset,
+      y: splitOffset,
+      scale: figure1PartScale,
       transformOrigin: 'center',
       duration: 1,
       ease: 'power2.inOut',
     }, '<')
     .to(figure1Parts[3], {
-      x: -180,
-      y: 180,
-      scale: 3,
+      x: -splitOffset,
+      y: splitOffset,
+      scale: figure1PartScale,
       transformOrigin: 'center',
       duration: 1,
       ease: 'power2.inOut',
@@ -320,7 +421,6 @@ export function initSolutionsSymbolAnimation(gsap, ScrollTrigger) {
       ease: 'power2.inOut',
     }, '<')
 
-    // Morph para a Figura-1 final.
     .to(figure1Parts, {
       x: 0,
       y: 0,
@@ -332,29 +432,38 @@ export function initSolutionsSymbolAnimation(gsap, ScrollTrigger) {
       ease: 'power1.inOut',
     })
     .to(symbol, {
-      scale: 2.8,
-      duration: 0.8,
+      scale: finalSymbolScale,
+      duration: pauseDuration,
       ease: 'power1.inOut',
     })
     .to({}, {
-      duration: 0.8,
-    })
+      duration: pauseDuration,
+    });
+  }
 
-    // Figura-1 volta para o quadrado.
-    .to(figure1Parts, {
+  animateManagementToWeb();
+
+  // Fase 3: sistema web para sistema mobile.
+  function animateWebToMobile() {
+    timeline
+      .to(figure1Parts, {
       attr: (index) => ({
         points: figure1SquarePoints[index],
       }),
-      duration: 1,
+      duration: morphDuration,
       ease: 'power1.inOut',
     })
     .to(symbol, {
-      scale: 1,
-      duration: 1,
+      scale: baseSymbolScale,
+      duration: morphDuration,
+      ease: 'power1.inOut',
+    }, '<')
+    .to(symbolPosition, {
+      y: () => getSolutionAnchorOffsetY(mobileAnchor),
+      duration: morphDuration,
       ease: 'power1.inOut',
     }, '<')
 
-    // Troca invisível: 4 partes somem, 2 partes aparecem como quadrado.
     .set(figure2Parts[0], {
       attr: {
         points: figure2SquarePoints.top,
@@ -372,25 +481,23 @@ export function initSolutionsSymbolAnimation(gsap, ScrollTrigger) {
       opacity: 0,
     })
 
-    // Os 2 retângulos se separam e expandem.
     .to(figure2Parts[0], {
-      y: -180,
-      scaleX: 3.2,
-      scaleY: 2.6,
+      y: -splitOffset,
+      scaleX: figure2PartScaleX,
+      scaleY: figure2PartScaleY,
       transformOrigin: 'center bottom',
       duration: 1,
       ease: 'power2.inOut',
     })
     .to(figure2Parts[1], {
-      y: 180,
-      scaleX: 3.2,
-      scaleY: 2.6,
+      y: splitOffset,
+      scaleX: figure2PartScaleX,
+      scaleY: figure2PartScaleY,
       transformOrigin: 'center top',
       duration: 1,
       ease: 'power2.inOut',
     }, '<')
 
-    // Morph para a Figura-2 final.
     .to(figure2Parts[0], {
       y: 0,
       scaleX: 1,
@@ -412,36 +519,45 @@ export function initSolutionsSymbolAnimation(gsap, ScrollTrigger) {
       ease: 'power1.inOut',
     }, '<')
     .to(symbol, {
-      scale: 2.8,
+      scale: finalSymbolScale,
       duration: 0.4,
       ease: 'power1.inOut',
     })
     .to({}, {
-      duration: 0.8,
-    })
+      duration: pauseDuration,
+    });
+  }
 
-    // Figura-2 volta para o quadrado.
-    .to(figure2Parts[0], {
+  animateWebToMobile();
+
+  // Fase 4: sistema mobile para automacao.
+  function animateMobileToAutomation() {
+    timeline
+      .to(figure2Parts[0], {
       attr: {
         points: figure2SquarePoints.top,
       },
-      duration: 1,
+      duration: morphDuration,
       ease: 'power1.inOut',
     })
     .to(figure2Parts[1], {
       attr: {
         points: figure2SquarePoints.bottom,
       },
-      duration: 1,
+      duration: morphDuration,
       ease: 'power1.inOut',
     }, '<')
     .to(symbol, {
-      scale: 1,
-      duration: 1,
+      scale: baseSymbolScale,
+      duration: morphDuration,
       ease: 'power1.inOut',
     }, '<')
 
-    // A elipse nasce no centro do quadrado e cresce até 750x750.
+    .to(symbolPosition, {
+      y: () => getSolutionAnchorOffsetY(automationAnchor),
+      duration: morphDuration,
+      ease: 'power1.inOut',
+    }, '<')
     .set(figure3Circle, {
       attr: {
         r: 0,
@@ -456,7 +572,7 @@ export function initSolutionsSymbolAnimation(gsap, ScrollTrigger) {
     })
     .to(figure3Circle, {
       attr: {
-        r: 375,
+        r: circleFinalRadius,
       },
       duration: 0.6,
       ease: 'power2.inOut',
@@ -467,7 +583,6 @@ export function initSolutionsSymbolAnimation(gsap, ScrollTrigger) {
       ease: 'none',
     })
 
-    // O círculo se divide em dois semicírculos reais.
     .set(figure3Parts[0], {
       attr: {
         d: figure3SemiCirclePaths.top,
@@ -486,7 +601,6 @@ export function initSolutionsSymbolAnimation(gsap, ScrollTrigger) {
       opacity: 0,
     })
 
-    // O semicírculo de cima gira no próprio eixo.
     .to(figure3Parts[0], {
       rotation: 0,
       svgOrigin: '300 112.5',
@@ -494,11 +608,14 @@ export function initSolutionsSymbolAnimation(gsap, ScrollTrigger) {
       ease: 'power2.inOut',
     })
     .to(symbol, {
-      scale: 2.8,
+      scale: finalSymbolScale,
       duration: 1.4,
       ease: 'power1.inOut',
     })
     .to({}, {
       duration: 1,
     });
+  }
+
+  animateMobileToAutomation();
 }

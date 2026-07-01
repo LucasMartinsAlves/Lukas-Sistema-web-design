@@ -36,10 +36,6 @@
     flex-direction: column;
   }
 
-  .about-ex-proof-column--secondary {
-    padding-top: 5rem;
-  }
-
   .proof-card {
     display: flex;
     flex-direction: column;
@@ -60,7 +56,7 @@
 
   .proof-card-value {
     color: var(--primary-color);
-    font-family: 'Libre Bodoni';
+    font-family: 'Libre Bodoni', serif;
     font-size: clamp(2.75rem, 13vw, 4rem);
     font-weight: 500;
     line-height: 1;

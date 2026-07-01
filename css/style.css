@@ -4,7 +4,7 @@
 @import url('./intro.css');
 @import url('./hero.css');
 @import url('./about.css');
-@import url('about-ex.css');
+@import url('./about-ex.css');
 @import url('./solutions.css');
 @import url('./contact.css');
 @import url('./footer.css');
@@ -19,6 +19,20 @@ body {
   font-family: "Poppins", sans-serif;
   color: var(--black-color);
   background-color: var(--white-background-color-primary);
+}
+
+body.is-scroll-locked {
+  overflow: hidden;
+}
+
+body.is-solutions-dropdown-open::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 8;
+  background-color: rgba(0, 0, 0, 0.28);
+  opacity: 1;
+  pointer-events: none;
 }
 
 button,

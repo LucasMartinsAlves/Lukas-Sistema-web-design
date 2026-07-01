@@ -71,7 +71,6 @@
       clamp(4rem, 7vw, 6rem) clamp(4rem, 8.5vw, 7.5rem);
 
     .hero-title {
-      top: 0;
       align-self: start;
       justify-self: start;
       margin-top: clamp(2rem, 5vh, 3.25rem);

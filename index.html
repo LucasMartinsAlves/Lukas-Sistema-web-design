@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="css/style.css">
-  <title>Lukas Sistema</title>
+  <title>Lukas Sistemas</title>
 </head>
 
 <body>
@@ -15,10 +15,38 @@
       <span class="company-name">Lukas Sistemas</span>
       <span class="company-subtitle">Construção de Software</span>
     </a>
-    <nav id="primary-navigation">
+    <nav id="primary-navigation" aria-label="Navegação principal">
       <ul>
         <li><a href="#">Quem somos</a></li>
-        <li><a href="#">Soluções</a></li>
+        <li class="solutions-dropdown">
+          <button class="solutions-dropdown-toggle" type="button" aria-expanded="false"
+            aria-controls="solutions-dropdown-menu">
+            Soluções
+            <span class="solutions-dropdown-icon" aria-hidden="true"></span>
+          </button>
+
+          <div class="solutions-dropdown-menu" id="solutions-dropdown-menu">
+            <a class="solutions-dropdown-card" href="#">
+              <img class="solutions-dropdown-figure" src="assets/images/Figura.svg" alt="" aria-hidden="true">
+              <span class="solutions-dropdown-text">Sistema de Gestão</span>
+            </a>
+
+            <a class="solutions-dropdown-card" href="#">
+              <img class="solutions-dropdown-figure" src="assets/images/Figura-1.svg" alt="" aria-hidden="true">
+              <span class="solutions-dropdown-text">Sistema Web</span>
+            </a>
+
+            <a class="solutions-dropdown-card" href="#">
+              <img class="solutions-dropdown-figure" src="assets/images/Figura-2.svg" alt="" aria-hidden="true">
+              <span class="solutions-dropdown-text">Sistema Mobile</span>
+            </a>
+
+            <a class="solutions-dropdown-card" href="#">
+              <img class="solutions-dropdown-figure" src="assets/images/Figura-3.svg" alt="" aria-hidden="true">
+              <span class="solutions-dropdown-text">Automação</span>
+            </a>
+          </div>
+        </li>
         <li><a href="#">Portfólio</a></li>
         <li><a href="#">Equipe</a></li>
         <li><a href="#">Contato</a></li>
@@ -43,7 +71,6 @@
         </div>
       </div>
 
-      <!-- Hero section -->
       <section class="hero">
         <h1 class="hero-title">
           <span>
@@ -69,7 +96,6 @@
       </section>
 
       <div class="about-transition">
-        <!-- About section -->
         <section class="about" id="quem-somos">
           <div class="about-content">
             <span class="about-eyebrow">Sobre Lukas Sistemas</span>
@@ -82,7 +108,6 @@
           </div>
         </section>
 
-        <!-- About ex. section -->
         <section class="about-ex">
           <div class="about-ex-content">
             <h2 class="about-ex-description">
@@ -128,7 +153,6 @@
       </div>
     </div>
 
-    <!-- Solution Section -->
     <div class="solutions-transition">
       <div class="solutions-symbol-stage" aria-hidden="true">
         <div class="solutions-symbol-position">
@@ -221,6 +245,7 @@
 
       <section class="solutions-intro" id="solucoes">
         <span class="solutions-intro-glow" aria-hidden="true"></span>
+        <span class="solutions-symbol-anchor solutions-symbol-anchor-intro" aria-hidden="true"></span>
 
         <span class="solutions-intro-eyebrow">Soluções Tecnológicas</span>
 
@@ -247,6 +272,8 @@
         </nav>
 
         <section class="solution solution-management">
+          <span class="solutions-symbol-anchor solutions-symbol-anchor-management" aria-hidden="true"></span>
+
           <img class="solution-image solution-image-management" src="assets/images/solucoes-mobile/background-1.webp"
             alt="" aria-hidden="true">
 
@@ -289,6 +316,8 @@
         </section>
 
         <section class="solution solution-web">
+          <span class="solutions-symbol-anchor solutions-symbol-anchor-web" aria-hidden="true"></span>
+
           <img class="solution-image solution-image-web" src="assets/images/solucoes-mobile/background-2.webp" alt=""
             aria-hidden="true">
 
@@ -329,6 +358,8 @@
         </section>
 
         <section class="solution solution-mobile">
+          <span class="solutions-symbol-anchor solutions-symbol-anchor-mobile" aria-hidden="true"></span>
+
           <img class="solution-image solution-image-mobile" src="assets/images/solucoes-mobile/background-3.webp" alt=""
             aria-hidden="true">
 
@@ -369,6 +400,8 @@
         </section>
 
         <section class="solution solution-automation">
+          <span class="solutions-symbol-anchor solutions-symbol-anchor-automation" aria-hidden="true"></span>
+
           <img class="solution-image solution-image-automation" src="assets/images/solucoes-mobile/background-4.webp"
             alt="" aria-hidden="true">
 
@@ -410,7 +443,6 @@
       </div>
     </div>
 
-    <!-- Contact section -->
     <section class="contact" id="contato">
       <h2 class="contact-headline">
         A oportunidade de criar, crescer e seguir em frente
@@ -433,10 +465,10 @@
             <a href="tel:+5599999999999">99 9 9999-9999</a>
           </li>
 
-          <!-- <li class="contact-item">
+          <li class="contact-item">
             <strong>Luma</strong>
             <a href="tel:+5599999999999">99 9 9999-9999</a>
-          </li> -->
+          </li>
         </ul>
 
         <img class="contact-figure" src="assets/images/solucoes-mobile/Figura.svg" alt="" aria-hidden="true">

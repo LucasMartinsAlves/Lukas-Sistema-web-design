@@ -25,6 +25,9 @@ export function initSolutionsAnimation(gsap, ScrollTrigger) {
   });
 
   const sections = gsap.utils.toArray('.solution');
+  const navigation = document.querySelector('.solution-navigation');
+  const automationSection = document.querySelector('.solution-automation');
+  const symbol = document.querySelector('.solutions-symbol');
   const navigationItems = gsap.utils.toArray('.solution-navigation-item');
 
   function setActiveItem(activeIndex) {
@@ -85,4 +88,30 @@ export function initSolutionsAnimation(gsap, ScrollTrigger) {
       },
     });
   });
+
+  if (navigation && automationSection) {
+    gsap.to(navigation, {
+      opacity: 0,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: automationSection,
+        start: 'bottom 55%',
+        end: 'bottom 35%',
+        scrub: true,
+      },
+    });
+  }
+
+  if (symbol && automationSection) {
+    gsap.to(symbol, {
+      opacity: 0,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: automationSection,
+        start: 'bottom 55%',
+        end: 'bottom 15%',
+        scrub: true,
+      },
+    });
+  }
 }
